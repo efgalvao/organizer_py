@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Categories List{% endblock %}
+
+{% block content %}
+<h2>Categories List</h2>
+<a href="{% url 'users:create_category' %}">Criar Categoria</a>
+
+<ul>
+  {% for category in categories %}
+  <li>
+    {{ category.name }}
+    <div style="display: inline-block;">
+      <a href="{% url 'users:update_category' category.id %}">
+        <button type="button">Update</button>
+      </a>
+    </div>
+    <div style="display: inline-block;">
+      <form method="post" action="{% url 'users:delete_category' category.id %}">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+      </form>
+    </div>
+  </li>
+  {% endfor %}
+
+  {% endblock %}
