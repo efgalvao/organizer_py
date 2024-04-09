@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Accounts List{% endblock %}
+
+{% block content %}
+
+<h2>Accounts List</h2>
+<a href="{% url 'organizer:create_account' %}">Cadastrar Conta</a>
+
+<ul>
+  {% for account in accounts %}
+  <li>
+    {{ account.name }}
+    {{ account.balance_cents }}
+    {{ account.kind }}
+    <div style="display: inline-block;">
+      <a href="{% url 'organizer:update_account' account.id %}">
+        <button type="button">Update</button>
+      </a>
+    </div>
+    <div style="display: inline-block;">
+      <form method="post" action="{% url 'organizer:delete_account' account.id %}">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+      </form>
+    </div>
+  </li>
+  {% endfor %}
+
+  {% endblock %}
