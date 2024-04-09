@@ -5,6 +5,7 @@ from .views import (
     CategoriesListView,
     CreateCategoryView,
     DeleteCategoryView,
+    CategoryUpdateView,
 )
 
 app_name = "users"
@@ -16,5 +17,10 @@ urlpatterns = [
         "categories/delete/<int:pk>/",
         DeleteCategoryView.as_view(),
         name="delete_category",
+    ),
+    path(
+        "categories/update/<int:pk>/",
+        CategoryUpdateView.as_view(),
+        name="update_category",
     ),
 ]

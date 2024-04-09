@@ -9,5 +9,13 @@ class CategoryServices:
 
     @staticmethod
     def create_category(user, params):
-        category = Category.objects.create(name=params["name"], user_id=user.id)
+        category = Category.objects.create(
+            name=params["name"], user_id=user.id)
+        return category
+
+    @staticmethod
+    def update_category(user, params, category_id):
+        category = Category.objects.get(id=category_id, user_id=user.id)
+        category.name = params["name"]
+        category.save()
         return category
