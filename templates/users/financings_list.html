@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Financings List{% endblock %}
+
+{% block content %}
+<h2>Financings List</h2>
+<a href="{% url 'users:create_financing' %}">Criar Financiamento</a>
+
+<ul>
+  {% for financing in financings %}
+  <li>
+    {{ financing.name }}
+    {{ financing.installments }}
+    {{ financing.borrowed_value_cents }}
+    <!-- <div style="display: inline-block;">
+      <a href="{% url 'users:update_category' financing.id %}">
+        <button type="button">Update</button>
+      </a>
+    </div>
+    <div style="display: inline-block;">
+      <form method="post" action="{% url 'users:delete_category' financing.id %}">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+      </form>
+    </div>
+  </li> -->
+    {% endfor %}
+
+    {% endblock %}

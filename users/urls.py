@@ -6,6 +6,8 @@ from .views import (
     CreateCategoryView,
     DeleteCategoryView,
     CategoryUpdateView,
+    FinancingsListView,
+    CreateFinancingView,
 )
 
 app_name = "users"
@@ -23,4 +25,6 @@ urlpatterns = [
         CategoryUpdateView.as_view(),
         name="update_category",
     ),
+    path("financings/", FinancingsListView.as_view(), name="financings_list"),
+    path("financings/create/", CreateFinancingView.as_view(), name="create_financing"),
 ]

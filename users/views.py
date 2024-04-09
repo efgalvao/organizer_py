@@ -4,14 +4,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 
-from .models import Category
+from .models import Category, Financing
 from django.views.generic import CreateView, ListView, DeleteView
 from Services.category_services import CategoryServices
+from Services.financing_services import FinancingServices
 from django.shortcuts import render
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .forms import CategoryForm
+from .forms import CategoryForm, FinancingForm
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -61,3 +62,23 @@ class DeleteCategoryView(LoginRequiredMixin, DeleteView):
     model = Category
     template_name = "users/category_confirm_delete.html"
     success_url = reverse_lazy("users:categories_list")
+
+
+@method_decorator(login_required, name="dispatch")
+class FinancingsListView(ListView):
+    model = Financing
+    template_name = "users/financings_list.html"
+    context_object_name = "financings"
+
+    def get_queryset(self):
+        return FinancingServices.fetch_financings_for_user(user=self.request.user)
+
+
+class CreateFinancingView(LoginRequiredMixin, FormView):
+    template_name = "users/financing_form.html"
+    form_class = FinancingForm
+    success_url = reverse_lazy("users:financings_list")
+
+    def form_valid(self, form):
+        FinancingServices.create_financing(self.request.user, form.cleaned_data)
+        return super().form_valid(form)
