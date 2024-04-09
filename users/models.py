@@ -16,7 +16,7 @@ class Category(models.Model):
 class Financing(models.Model):
     name = models.CharField(max_length=100)
     borrowed_value_cents = models.IntegerField()
-    installments = models.IntegerField()
+    parcels = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

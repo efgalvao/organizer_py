@@ -9,10 +9,9 @@ class FinancingServices:
 
     @staticmethod
     def create_financing(user, params):
-        print(params)
         financing = Financing.objects.create(
             name=params["name"],
-            installments=params["installments"],
+            parcels=params["parcels"],
             borrowed_value_cents=FinancingServices.convert_to_cents(
                 params["borrowed_value_cents"]
             ),
@@ -24,9 +23,13 @@ class FinancingServices:
     def convert_to_cents(value):
         return int(value * 100)
 
-    # @staticmethod
-    # def update_category(user, params, category_id):
-    #     category = Category.objects.get(id=category_id, user_id=user.id)
-    #     category.name = params["name"]
-    #     category.save()
-    #     return category
+    @staticmethod
+    def update_financing(user, params, financing_id):
+        financing = Financing.objects.get(id=financing_id, user_id=user.id)
+        financing.name = params["name"]
+        financing.parcels = params["parcels"]
+        financing.borrowed_value_cents = FinancingServices.convert_to_cents(
+            params["borrowed_value_cents"]
+        )
+        financing.save()
+        return financing

@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 
 from .models import Category, Financing
-from django.views.generic import CreateView, ListView, DeleteView
+from django.views.generic import CreateView, ListView, DeleteView, DetailView
 from Services.category_services import CategoryServices
 from Services.financing_services import FinancingServices
 from django.shortcuts import render
@@ -60,7 +60,6 @@ class CategoryUpdateView(LoginRequiredMixin, FormView):
 
 class DeleteCategoryView(LoginRequiredMixin, DeleteView):
     model = Category
-    template_name = "users/category_confirm_delete.html"
     success_url = reverse_lazy("users:categories_list")
 
 
@@ -82,3 +81,28 @@ class CreateFinancingView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         FinancingServices.create_financing(self.request.user, form.cleaned_data)
         return super().form_valid(form)
+
+
+class DeleteFinancingView(LoginRequiredMixin, DeleteView):
+    model = Financing
+    # template_name = "users/financing_confirm_delete.html"
+    success_url = reverse_lazy("users:financings_list")
+
+
+class UpdateFinancingView(LoginRequiredMixin, FormView):
+    model = Financing
+    form_class = FinancingForm
+    template_name = "users/financing_form.html"
+    success_url = reverse_lazy("users:financings_list")
+
+    def form_valid(self, form):
+        financing_id = self.kwargs["pk"]
+        FinancingServices.update_financing(
+            self.request.user, form.cleaned_data, financing_id
+        )
+        return super().form_valid(form)
+
+
+class ShowFinancingView(LoginRequiredMixin, DetailView):
+    model = Financing
+    template_name = "users/financing_detail.html"

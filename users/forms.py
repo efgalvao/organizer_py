@@ -17,4 +17,4 @@ class FinancingForm(forms.ModelForm):
 
     class Meta:
         model = Financing
-        fields = ["name", "borrowed_value_cents", "installments"]
+        fields = ["name", "borrowed_value_cents", "parcels"]

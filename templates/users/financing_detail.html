@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{{ financing.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ financing.name }}</h1>
+Parcels
+<p>{{ financing.parcels }}</p>
+Borrowed Value
+<p>{{ financing.borrowed_value_cents }}</p>
+
+{% endblock %}
