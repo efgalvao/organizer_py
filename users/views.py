@@ -46,12 +46,14 @@ class CreateCategoryView(LoginRequiredMixin, FormView):
 class CategoryUpdateView(LoginRequiredMixin, FormView):
     model = Category
     form_class = CategoryForm
-    template_name = 'categories/category_form.html'
+    template_name = "users/category_form.html"
+    success_url = reverse_lazy("users:categories_list")
 
     def form_valid(self, form):
-        category_id = self.kwargs['pk']
+        category_id = self.kwargs["pk"]
         CategoryServices.update_category(
-            self.request.user, form.cleaned_data, category_id)
+            self.request.user, form.cleaned_data, category_id
+        )
         return super().form_valid(form)
 
 
