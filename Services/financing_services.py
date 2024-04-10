@@ -33,3 +33,34 @@ class FinancingServices:
         )
         financing.save()
         return financing
+
+    @staticmethod
+    def fetch_installments_for_financing(user, financing_id):
+        financing = Financing.objects.get(id=financing_id, user=user)
+        installments = financing.installments.all().order_by("parcel")
+        return installments
+
+    @staticmethod
+    def create_installment(user, params, financing_id):
+        financing = Financing.objects.get(id=financing_id, user=user)
+        installment = financing.installments.create(
+            ordinary=params["ordinary"],
+            parcel=params["parcel"],
+            paid_parcels=params["paid_parcels"],
+            payment_date=params["payment_date"],
+            amortization_cents=FinancingServices.convert_to_cents(
+                params["amortization_cents"]
+            ),
+            interest_cents=FinancingServices.convert_to_cents(params["interest_cents"]),
+            insurance_cents=FinancingServices.convert_to_cents(
+                params["insurance_cents"]
+            ),
+            fees_cents=FinancingServices.convert_to_cents(params["fees_cents"]),
+            monetary_correction_cents=FinancingServices.convert_to_cents(
+                params["monetary_correction_cents"]
+            ),
+            adjustment_cents=FinancingServices.convert_to_cents(
+                params["adjustment_cents"]
+            ),
+        )
+        return installment

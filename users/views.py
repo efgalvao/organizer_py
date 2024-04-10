@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 
-from .models import Category, Financing
+from .models import Category, Financing, Installment
 from django.views.generic import CreateView, ListView, DeleteView, DetailView
 from Services.category_services import CategoryServices
 from Services.financing_services import FinancingServices
@@ -12,7 +12,7 @@ from django.shortcuts import render
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .forms import CategoryForm, FinancingForm
+from .forms import CategoryForm, FinancingForm, InstallmentForm
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -106,3 +106,44 @@ class UpdateFinancingView(LoginRequiredMixin, FormView):
 class ShowFinancingView(LoginRequiredMixin, DetailView):
     model = Financing
     template_name = "users/financing_detail.html"
+
+
+class ListInstallmentsView(LoginRequiredMixin, ListView):
+    model = Installment
+    template_name = "users/installments_list.html"
+    context_object_name = "installments"
+
+    def get_queryset(self):
+        financing_id = self.kwargs["financing_id"]
+        return FinancingServices.fetch_installments_for_financing(
+            user=self.request.user, financing_id=financing_id
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["financing_id"] = self.kwargs["financing_id"]
+        return context
+
+
+class CreateInstallmentView(LoginRequiredMixin, FormView):
+    template_name = "users/installment_form.html"
+    form_class = InstallmentForm
+    success_url = reverse_lazy("users:installments_list")
+
+    def form_valid(self, form):
+        financing_id = self.kwargs["financing_id"]
+        FinancingServices.create_installment(
+            self.request.user, form.cleaned_data, financing_id
+        )
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["financing_id"] = self.kwargs["financing_id"]
+        return context
+
+    def get_success_url(self):
+        financing_id = self.kwargs["financing_id"]
+        return reverse_lazy(
+            "users:installments_list", kwargs={"financing_id": financing_id}
+        )
