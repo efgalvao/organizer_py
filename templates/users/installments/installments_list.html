@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Installments List{% endblock %}
+
+{% block content %}
+<h2>Installments List</h2>
+<a href="{% url 'users:create_installment' financing_id=financing_id %}">Cadastrar Pagamento</a>
+
+<ul>
+  {% for installment in installments %}
+  <li>
+    {{ installment }}
+    <br>
+    {{ installment.parcel }}
+    {{ installment.paid_parcels }}
+    {{ installment.payment_date }}
+
+  </li>
+  {% endfor %}
+
+  {% endblock %}

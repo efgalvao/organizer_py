@@ -24,3 +24,25 @@ class Financing(models.Model):
 
     class Meta:
         verbose_name_plural = "Financings"
+
+
+class Installment(models.Model):
+    financing = models.ForeignKey(
+        Financing, related_name="installments", on_delete=models.CASCADE
+    )
+    ordinary = models.BooleanField(default=True)
+    parcel = models.IntegerField()
+    paid_parcels = models.IntegerField()
+    payment_date = models.DateField()
+    amortization_cents = models.IntegerField()
+    interest_cents = models.IntegerField()
+    insurance_cents = models.IntegerField()
+    fees_cents = models.IntegerField()
+    monetary_correction_cents = models.IntegerField()
+    adjustment_cents = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.financing.name} - {self.parcel}"
+
+    class Meta:
+        verbose_name_plural = "Installments"

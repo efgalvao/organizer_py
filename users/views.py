@@ -8,7 +8,6 @@ from .models import Category, Financing
 from django.views.generic import CreateView, ListView, DeleteView, DetailView
 from Services.category_services import CategoryServices
 from Services.financing_services import FinancingServices
-from django.shortcuts import render
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
