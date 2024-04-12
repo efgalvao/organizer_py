@@ -11,8 +11,7 @@ from .views import (
     DeleteFinancingView,
     UpdateFinancingView,
     ShowFinancingView,
-    ListInstallmentsView,
-    CreateInstallmentView,
+    installment_views,
 )
 
 app_name = "users"
@@ -49,12 +48,12 @@ urlpatterns = [
     ),
     path(
         "financings/<int:financing_id>/installments/",
-        ListInstallmentsView.as_view(),
+        installment_views.ListInstallmentsView.as_view(),
         name="installments_list",
     ),
     path(
         "financings/<int:financing_id>/installments/create/",
-        CreateInstallmentView.as_view(),
+        installment_views.CreateInstallmentView.as_view(),
         name="create_installment",
     ),
 ]
