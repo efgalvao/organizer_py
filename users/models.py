@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# from organizer.models import Account
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -46,3 +48,15 @@ class Installment(models.Model):
 
     class Meta:
         verbose_name_plural = "Installments"
+
+
+class Transference(models.Model):
+    receiver = models.ForeignKey(
+        "organizer.Account", related_name="receiver", on_delete=models.CASCADE
+    )
+    sender = models.ForeignKey(
+        "organizer.Account", related_name="sender", on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    value_cents = models.IntegerField()
+    date = models.DateField()

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Categories List{% endblock %}
+
+{% block content %}
+<h2>Categories List</h2>
+<a href="{% url 'users:create_transference' %}">Cadastrar Transferencia</a>
+
+<ul>
+  {% for transference in transferences %}
+  <li>
+    {{ transference.date }}
+    {{ transference.value_cents }}
+    {{ transference.sender }}
+    {{ transference.receiver }}
+    {{ transference.id }}
+
+  </li>
+  {% endfor %}
+
+  {% endblock %}

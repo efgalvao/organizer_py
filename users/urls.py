@@ -5,6 +5,7 @@ from .views import (
     category_views,
     financing_views,
     installment_views,
+    transference_views,
 )
 
 app_name = "users"
@@ -64,5 +65,15 @@ urlpatterns = [
         "financings/<int:financing_id>/installments/create/",
         installment_views.CreateInstallmentView.as_view(),
         name="create_installment",
+    ),
+    path(
+        "transferences/",
+        transference_views.TransferenceListView.as_view(),
+        name="transference_list",
+    ),
+    path(
+        "transferences/create/",
+        transference_views.CreateTransferenceView.as_view(),
+        name="create_transference",
     ),
 ]
