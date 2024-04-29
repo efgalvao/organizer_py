@@ -1,4 +1,4 @@
-from organizer.models import Account
+from account.models import Account
 
 
 class AccountServices:
