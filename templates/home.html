@@ -6,6 +6,9 @@
 {% if user.is_authenticated %}
 Hi {{ user.username }}!
 <a href="{% url 'users:categories_list' %}">Categories</a>
+<a href="{% url 'users:financings_list' %}">Financings</a>
+<a href="{% url 'users:transference_list' %}">Transferences</a>
+<a href="{% url 'account:accounts_list' %}">Accounts</a>
 <form action="{% url 'logout' %}" method="post">
   {% csrf_token %}
   <button type="submit">Log Out</button>

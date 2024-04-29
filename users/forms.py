@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator
 from decimal import Decimal
 from .models import Category, Financing, Installment, Transference
 from Services.account_services import AccountServices
-from organizer.models import Account
+from account.models import Account
 
 
 class CategoryForm(forms.ModelForm):
