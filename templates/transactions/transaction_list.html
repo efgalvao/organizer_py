@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}transactions List{% endblock %}
+
+{% block content %}
+
+<h2>transactions List</h2>
+<a href="{% url 'account:account_list' %}">Voltar</a>
+
+<ul>
+  {% for transaction in transactions %}
+  <li>
+    {{ transaction.description }}
+    {{ transaction.date }}
+    {{ transaction.kind }}
+    {{ transaction.value_cents }}
+    {{ transaction.account }}
+    {{ transaction.category }}
+    <div style="display: inline-block;">
+      <!-- <a href="{% url 'transactions:update_account' transactions.id %}">
+        <button type="button">Update</button>
+      </a> -->
+    </div>
+  </li>
+  {% endfor %}
+
+  {% endblock %}
