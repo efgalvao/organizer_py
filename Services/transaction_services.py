@@ -1,5 +1,6 @@
 from account.models import Transaction, Account
 from .transactions.process_transaction_request import ProcessTransactionRequest
+import pdb
 
 
 class TransactionServices:
@@ -12,14 +13,10 @@ class TransactionServices:
 
     @staticmethod
     def create_transaction(user, params):
-        # print(params, AccountServices.convert_to_cents(params["balance_cents"]))
-        # account = Transaction.objects.create(
-        #     name=params["name"],
-        #     kind=params["kind"],
-        #     balance_cents=AccountServices.convert_to_cents(params["balance_cents"]),
-        #     user_id=user.id,
-        # )
-        transaction = ProcessTransactionRequest(user, params)
+
+        print("--- TransactionServices", user, params)
+        # pdb.set_trace()
+        transaction = ProcessTransactionRequest(user, params).process()
         return transaction
 
     # @staticmethod

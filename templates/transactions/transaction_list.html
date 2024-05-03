@@ -5,21 +5,21 @@
 {% block content %}
 
 <h2>transactions List</h2>
-<a href="{% url 'account:account_list' %}">Voltar</a>
+<a href="{% url 'account:create_transaction' account_id %}">Cadastrar Transação</a>
+<br>
+<a href="{% url 'account:account_details' account_id %}">Voltar</a>
 
 <ul>
   {% for transaction in transactions %}
   <li>
     {{ transaction.description }}
-    {{ transaction.date }}
+    {{ transaction.date|date:'d-m-Y' }}
     {{ transaction.kind }}
     {{ transaction.value_cents }}
     {{ transaction.account }}
     {{ transaction.category }}
     <div style="display: inline-block;">
-      <!-- <a href="{% url 'transactions:update_account' transactions.id %}">
-        <button type="button">Update</button>
-      </a> -->
+
     </div>
   </li>
   {% endfor %}

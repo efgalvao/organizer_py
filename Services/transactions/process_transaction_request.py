@@ -1,5 +1,5 @@
 from datetime import date
-from Services.transactions.create_expense_transaction import CreateExpenseTransaction
+from .create_expense_transaction import CreateExpenseTransaction
 from Services.transactions.create_income_transaction import CreateIncomeTransaction
 
 
@@ -9,13 +9,15 @@ class ProcessTransactionRequest:
         self.params = params
 
     def process(self):
-        if self.params["kind"] == 0:
-            self.process_expense()
-        elif self.params["kind"] == 1:
-            self.process_income()
+        print("--- ProcessTransactionRequest", self.user, self.params)
+
+        if self.params["kind"] == "0":
+            return self.process_expense()
+        elif self.params["kind"] == "1":
+            return self.process_income()
 
     def process_expense(self):
-        CreateExpenseTransaction.process(self.user, self.params)
+        return CreateExpenseTransaction.process(self.user, self.params)
 
     def process_income(self):
         CreateIncomeTransaction.process(self.user, self.params)

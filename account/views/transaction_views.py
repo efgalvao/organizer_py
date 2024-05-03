@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView
 from Services.transaction_services import TransactionServices
 from django.views.generic.edit import FormView
 
-# from ..forms import TransactionForm
+from ..forms import TransactionForm
 from django.urls import reverse_lazy
 from django.core import serializers
 
@@ -23,17 +23,42 @@ class TransactionListView(LoginRequiredMixin, ListView):
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         context = self.get_context_data()
+        context["account_id"] = self.kwargs.get("account_id", None)
         return self.render_to_response(context)
 
 
-# class CreateTransactionView(LoginRequiredMixin, FormView):
-#     template_name = "transactions/transaction_form.html"
-#     form_class = TransactionForm
-#     success_url = reverse_lazy("transaction:transactions_list")
+class CreateTransactionView(LoginRequiredMixin, FormView):
+    template_name = "transactions/transaction_form.html"
+    form_class = TransactionForm
+    # success_url = reverse_lazy(
+    #     "account:transactions_list", kwargs={"account_id": account_id}
+    # )
 
-#     def form_valid(self, form):
-#         TransactionServices.create_transaction(self.request.user, form.cleaned_data)
-#         return super().form_valid(form)
+    def get_success_url(self):
+        return reverse_lazy(
+            "account:transactions_list",
+            kwargs={"account_id": self.kwargs.get("account_id")},
+        )
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["account_id"] = self.kwargs.get("account_id")
+        kwargs["user_id"] = self.request.user.pk
+        return kwargs
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["account_id"] = self.kwargs.get("account_id")
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["account_id"] = self.kwargs.get("account_id")
+        return context
+
+    def form_valid(self, form):
+        TransactionServices.create_transaction(self.request.user, form.cleaned_data)
+        return super().form_valid(form)
 
 
 # class UpdateTransactionView(LoginRequiredMixin, FormView):

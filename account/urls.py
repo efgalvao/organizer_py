@@ -31,4 +31,9 @@ urlpatterns = [
         transaction_views.TransactionListView.as_view(),
         name="transactions_list",
     ),
+    path(
+        "<int:account_id>/transactions/create/",
+        transaction_views.CreateTransactionView.as_view(),
+        name="create_transaction",
+    ),
 ]

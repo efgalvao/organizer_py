@@ -10,16 +10,16 @@
   {{ account.name }}
   {{ account.balance_cents }}
   {{ account.kind }}
+  <div style="display: inline-block;">
+    <a href="{% url 'account:transactions_list' account.id %}">
+      <button type="button">Transações</button>
+    </a>
+  </div>
   <!-- <div style="display: inline-block;">
-      <a href="{% url 'users:update_category' account.id %}">
-        <button type="button">Update</button>
-      </a>
-    </div>
-    <div style="display: inline-block;">
-      <form method="post" action="{% url 'users:delete_category' account.id %}">
-        {% csrf_token %}
-        <input type="submit" value="Delete">
-      </form>
-    </div> -->
+    <form method="post" action="{% url 'account:transactions_list' account.id %}">
+      {% csrf_token %}
+      <input type="submit" value="Transações">
+    </form> -->
+  </div>
 
   {% endblock %}
