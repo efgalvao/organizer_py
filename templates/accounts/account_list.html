@@ -14,6 +14,11 @@
     {{ account.balance_cents }}
     {{ account.kind }}
     <div style="display: inline-block;">
+      <a href="{% url 'account:account_details' account.id %}">
+        <button type="button">Detalhes</button>
+      </a>
+    </div>
+    <div style="display: inline-block;">
       <a href="{% url 'account:update_account' account.id %}">
         <button type="button">Update</button>
       </a>

@@ -14,7 +14,7 @@ class AccountForm(forms.ModelForm):
     ]
 
     balance_cents = forms.DecimalField(
-        decimal_places=2, max_digits=10, validators=[MinValueValidator(Decimal("0.01"))]
+        decimal_places=2, max_digits=10
     )
     kind = forms.ChoiceField(choices=KIND_CHOICES)
 
@@ -45,7 +45,9 @@ class TransactionForm(forms.ModelForm):
             self.fields["date"].disabled = True
             self.fields["value_cents"].disabled = True
             self.fields["kind"].disabled = True
-        self.fields["category"].queryset = Category.objects.filter(user=user_id)
+        self.fields["category"].queryset = Category.objects.filter(
+            user=user_id)
+        self.fields["category"].required = False  # Make category optional
         account = get_object_or_404(Account, pk=self.account_id)
         self.fields["account"].initial = account
 
