@@ -4,9 +4,7 @@ import pdb
 
 class CreateExpenseTransaction:
     @staticmethod
-    def process(user, params):
-        print("---------", params)
-        # pdb.set_trace()
+    def process(params):
         transaction = Transaction.objects.create(
             account=params["account"],
             kind=0,
