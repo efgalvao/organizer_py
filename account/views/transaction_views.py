@@ -30,9 +30,6 @@ class TransactionListView(LoginRequiredMixin, ListView):
 class CreateTransactionView(LoginRequiredMixin, FormView):
     template_name = "transactions/transaction_form.html"
     form_class = TransactionForm
-    # success_url = reverse_lazy(
-    #     "account:transactions_list", kwargs={"account_id": account_id}
-    # )
 
     def get_success_url(self):
         return reverse_lazy(
@@ -61,21 +58,36 @@ class CreateTransactionView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-# class UpdateTransactionView(LoginRequiredMixin, FormView):
-#     model = Transaction
-#     form_class = TransactionForm
-#     template_name = "transactions/transaction_form.html"
-#     success_url = reverse_lazy("transaction:transactions_list")
+class UpdateTransactionView(LoginRequiredMixin, FormView):
+    model = Transaction
+    form_class = TransactionForm
+    template_name = "transactions/transaction_form.html"
 
-#     def form_valid(self, form):
-#         transaction_id = self.kwargs["pk"]
-#         TransactionServices.update_transaction(
-#             self.request.user, form.cleaned_data, transaction_id
-#         )
-#         return super().form_valid(form)
+    def get_success_url(self):
+        return reverse_lazy(
+            "account:transactions_list",
+            kwargs={"account_id": self.kwargs.get("account_id")},
+        )
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["account_id"] = self.kwargs.get("account_id")
+        kwargs["user_id"] = self.request.user.pk
+        if self.kwargs.get("pk"):
+            kwargs["instance"] = Transaction.objects.get(pk=self.kwargs.get("pk"))
+        return kwargs
 
-# class DeleteTransactionView(LoginRequiredMixin, DeleteView):
-#     model = Transaction
-#     success_url = reverse_lazy("transaction:transactions_list")
-#     context_object_name = "transaction"
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["account_id"] = self.kwargs.get("account_id")
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["account_id"] = self.kwargs.get("account_id")
+        return context
+
+    def form_valid(self, form):
+        transaction_id = self.kwargs["pk"]
+        TransactionServices.update_transaction(form.cleaned_data, transaction_id)
+        return super().form_valid(form)

@@ -36,4 +36,9 @@ urlpatterns = [
         transaction_views.CreateTransactionView.as_view(),
         name="create_transaction",
     ),
+    path(
+        "<int:account_id>/transactions/update/<int:pk>/",
+        transaction_views.UpdateTransactionView.as_view(),
+        name="update_transaction",
+    ),
 ]

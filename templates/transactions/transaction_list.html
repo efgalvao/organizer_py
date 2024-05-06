@@ -19,7 +19,9 @@
     {{ transaction.account }}
     {{ transaction.category }}
     <div style="display: inline-block;">
-
+      <a href="{% url 'account:update_transaction' account_id transaction.id %}">
+        <button type="button">Update</button>
+      </a>
     </div>
   </li>
   {% endfor %}
