@@ -20,4 +20,4 @@ class ProcessTransactionRequest:
         return CreateExpenseTransaction.process(self.params)
 
     def process_income(self):
-        CreateIncomeTransaction.process(self.user, self.params)
+        return CreateIncomeTransaction.process(self.params)

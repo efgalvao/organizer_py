@@ -12,9 +12,9 @@
 <ul>
   {% for transaction in transactions %}
   <li>
+    {{ transaction.kind }}
     {{ transaction.description }}
     {{ transaction.date|date:'d-m-Y' }}
-    {{ transaction.kind }}
     {{ transaction.value_cents }}
     {{ transaction.account }}
     {{ transaction.category }}
