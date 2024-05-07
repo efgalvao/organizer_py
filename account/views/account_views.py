@@ -25,7 +25,7 @@ class AccountListView(LoginRequiredMixin, ListView):
 class CreateAccountView(LoginRequiredMixin, FormView):
     template_name = "accounts/account_form.html"
     form_class = AccountForm
-    success_url = reverse_lazy("account:accounts_list")
+    success_url = reverse_lazy("account:account_list")
 
     def form_valid(self, form):
         AccountServices.create_account(self.request.user, form.cleaned_data)
@@ -34,7 +34,7 @@ class CreateAccountView(LoginRequiredMixin, FormView):
 
 class AccountDetailView(LoginRequiredMixin, DetailView):
     model = Account
-    template_name = "accounts/account_detail.html"
+    template_name = "accounts/account_details.html"
     context_object_name = "account"
 
 
@@ -42,7 +42,7 @@ class UpdateAccountView(LoginRequiredMixin, FormView):
     model = Account
     form_class = AccountForm
     template_name = "accounts/account_form.html"
-    success_url = reverse_lazy("account:accounts_list")
+    success_url = reverse_lazy("account:account_list")
 
     def form_valid(self, form):
         account_id = self.kwargs["pk"]
@@ -52,5 +52,5 @@ class UpdateAccountView(LoginRequiredMixin, FormView):
 
 class DeleteAccountView(LoginRequiredMixin, DeleteView):
     model = Account
-    success_url = reverse_lazy("account:accounts_list")
+    success_url = reverse_lazy("account:account_list")
     context_object_name = "account"
