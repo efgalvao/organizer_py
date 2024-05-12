@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block content %}
+
+<h2>Account</h2>
+
+<li>
+  {{ account.name }}
+  {{ account.balance_cents }}
+  {{ account.kind }}
+  <div style="display: inline-block;">
+    <a href="{% url 'account:transactions_list' account.id %}">
+      <button type="button">Transações</button>
+    </a>
+  </div>
+  <!-- <div style="display: inline-block;">
+    <form method="post" action="{% url 'account:transactions_list' account.id %}">
+      {% csrf_token %}
+      <input type="submit" value="Transações">
+    </form> -->
+  </div>
+
+  {% endblock %}

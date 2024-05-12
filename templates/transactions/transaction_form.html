@@ -12,10 +12,11 @@
         {{form.as_table}}
       </table>
       <div class="container d-flex justify-content-center" style="width: 10%;">
-        <input type="submit" class="btn btn-primary btn-lg" value="Submit"
+        <input type="submit" class="btn btn-primary btn-lg" value="Cadastrar"
           style="margin-right: 30px; margin-top: 30px;">
         <input type="button" class="btn btn-danger btn-lg" style="margin-top: 30px;"
-          onclick="window.location.href='{% url 'account:account_list' %}';" value="Cancel">
+          onclick="window.location.href='{% url 'account:account_details' pk=account_id %}'; return false;"
+          value="Voltar">
       </div>
     </form>
 
