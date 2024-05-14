@@ -2,6 +2,8 @@ from django.urls import path
 
 from .views import account_views
 from .views import transaction_views
+from .views import investment_views
+from .views import fixed_rate_views
 
 app_name = "account"
 urlpatterns = [
@@ -40,5 +42,20 @@ urlpatterns = [
         "<int:account_id>/transactions/update/<int:pk>/",
         transaction_views.UpdateTransactionView.as_view(),
         name="update_transaction",
+    ),
+    path(
+        "<int:account_id>/investments/",
+        investment_views.InvestmentListView.as_view(),
+        name="investments_list",
+    ),
+    path(
+        "<int:account_id>/investments/create/",
+        fixed_rate_views.CreateFixedRateView.as_view(),
+        name="create_fixed_rate",
+    ),
+    path(
+        "<int:account_id>/investments/update/<int:pk>/",
+        fixed_rate_views.UpdateFixedRateView.as_view(),
+        name="update_fixed_rate",
     ),
 ]

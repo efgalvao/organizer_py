@@ -1,34 +1,18 @@
-from ..models import Transaction
+from ..models import FixedRate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
 
-from Services.transaction_services import TransactionServices
+from django.views.generic import DetailView
+
+from Services.fixed_rate_services import FixedRateServices
 from django.views.generic.edit import FormView
 
-from ..forms import TransactionForm
+from ..forms import FixedRateForm
 from django.urls import reverse_lazy
 
 
-class TransactionListView(LoginRequiredMixin, ListView):
-    model = Transaction
-    template_name = "transactions/transaction_list.html"
-    context_object_name = "transactions"
-
-    def get_queryset(self):
-        user = self.request.user
-        account_id = self.kwargs.get("account_id", None)
-        return TransactionServices.fetch_transactions_for_account(account_id, user.pk)
-
-    def get(self, request, *args, **kwargs):
-        self.object_list = self.get_queryset()
-        context = self.get_context_data()
-        context["account_id"] = self.kwargs.get("account_id", None)
-        return self.render_to_response(context)
-
-
-class CreateTransactionView(LoginRequiredMixin, FormView):
-    template_name = "transactions/transaction_form.html"
-    form_class = TransactionForm
+class CreateFixedRateView(LoginRequiredMixin, FormView):
+    template_name = "investments/fixed_rate_form.html"
+    form_class = FixedRateForm
 
     def get_success_url(self):
         return reverse_lazy(
@@ -53,17 +37,18 @@ class CreateTransactionView(LoginRequiredMixin, FormView):
         return context
 
     def form_valid(self, form):
-        TransactionServices.create_transaction(self.request.user, form.cleaned_data)
+        FixedRateServices.create_fixed_rate(form.cleaned_data)
         return super().form_valid(form)
 
 
-class UpdateTransactionView(LoginRequiredMixin, FormView):
-    model = Transaction
-    form_class = TransactionForm
-    template_name = "transactions/transaction_form.html"
+class UpdateFixedRateView(LoginRequiredMixin, FormView):
+    model = FixedRate
+    form_class = FixedRateForm
+    template_name = "investments/fixed_rate_form.html"
 
     def get_success_url(self):
         return reverse_lazy(
+            # colocar para retornar no fixed_rate_detail
             "account:transactions_list",
             kwargs={"account_id": self.kwargs.get("account_id")},
         )
@@ -73,7 +58,7 @@ class UpdateTransactionView(LoginRequiredMixin, FormView):
         kwargs["account_id"] = self.kwargs.get("account_id")
         kwargs["user_id"] = self.request.user.pk
         if self.kwargs.get("pk"):
-            kwargs["instance"] = Transaction.objects.get(pk=self.kwargs.get("pk"))
+            kwargs["instance"] = FixedRate.objects.get(pk=self.kwargs.get("pk"))
         return kwargs
 
     def get_initial(self):
@@ -87,6 +72,12 @@ class UpdateTransactionView(LoginRequiredMixin, FormView):
         return context
 
     def form_valid(self, form):
-        transaction_id = self.kwargs["pk"]
-        TransactionServices.update_transaction(form.cleaned_data, transaction_id)
+        fixed_rate_id = self.kwargs["pk"]
+        FixedRateServices.update_fixed_rate(form.cleaned_data, fixed_rate_id)
         return super().form_valid(form)
+
+
+class AccountDetailView(LoginRequiredMixin, DetailView):
+    model = FixedRate
+    template_name = "investments/fixed_rate_details.html"
+    context_object_name = "fixed_rate"

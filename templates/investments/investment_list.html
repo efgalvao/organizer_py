@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Investment List{% endblock %}
+
+{% block content %}
+
+<h2>Investments List</h2>
+
+<br>
+<a href="{% url 'account:account_details' account_id %}">Voltar</a>
+<ul>
+  {% for investment in investments %}
+  <li>
+    {{ investment.name }}
+    {{ investment.invested_cents }}
+    {{ investment.current_balance_cents }}
+    {{ investment.current_total_balance_cents|investment.current_balance_cents }}
+    {{ investment.date|date:'d-m-Y' }}
+    <div style="display: inline-block;">
+      <a href="{% url 'account:account_details' account_id %}">
+        <button type="button">Update</button>
+      </a>
+    </div>
+  </li>
+  {% endfor %}
+
+  {% endblock %}

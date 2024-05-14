@@ -19,6 +19,10 @@ class Account(models.Model):
         reference = date.today().strftime("%m%y")
         return AccountReport.objects.get(account=self, reference=reference)
 
+    def investments(self):
+        fixed_rates = self.fixed_rate_set.all()
+        return list(fixed_rates)
+
     def __str__(self):
         return self.name
 
@@ -61,3 +65,14 @@ class Transaction(models.Model):
 
     def __str__(self):
         return self.description
+
+
+class FixedRate(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    invested_cents = models.IntegerField()
+    current_balance_cents = models.IntegerField()
+    released = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
